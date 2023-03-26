@@ -12,11 +12,19 @@ function Dashboard(props: Props) {
     <Container>
       <Header as="h2" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#507a4c', color: '#fff', padding: '1rem' }}>
         <Dropdown icon={<Icon name="bars" size="large" style={{ cursor: 'pointer' }} />} direction="right">
+          {props.role === 'Instructor' ? (
           <Dropdown.Menu>
-            <Link to="/group-sessions"><Dropdown.Item text="Group Sessions" /></Link>
+            <Link to="/group-sessions-instructor"><Dropdown.Item text="Group Sessions" /></Link>
             <Link to="/private-lesson-availability"><Dropdown.Item text="Private Lesson Availability" /></Link>
             <Link to="/payment-information"><Dropdown.Item text="Payment Information" /></Link>
           </Dropdown.Menu>
+          ) : (
+          <Dropdown.Menu>
+            <Link to="/group-sessions-student"><Dropdown.Item text="Group Sessions" /></Link>
+            <Link to="/private-lessons"><Dropdown.Item text="Private Lessons" /></Link>
+            <Link to="/payment-information"><Dropdown.Item text="Payment Information" /></Link>
+          </Dropdown.Menu>
+          )}
         </Dropdown>
         The Path of Virtue
         <Link to="/" onClick={props.onLogout}>
