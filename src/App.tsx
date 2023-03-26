@@ -1,25 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Login from './Login';
+import Dashboard from './Dashboard';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('authToken'));
+  const [role, setRole] = useState('');
+
+  const handleLogin = (role: string) => {
+    setIsLoggedIn(true);
+    setRole(role);
+  };
+
+  const handleLogout = () => {
+    setRole('');
+    setIsLoggedIn(false);
+    localStorage.removeItem('authToken');
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login onLogin={handleLogin} />}/>
+        <Route path="/dashboard" element={isLoggedIn ? <Dashboard role={role} /> : <Navigate to="/" />}/>
+      </Routes>
+    </Router>
   );
 }
 
